@@ -6,8 +6,9 @@ var PHOTOS = [
 ];
 (function () {
   var g = document.getElementById("gallery");
-  if (!g) return;
-  var n = Math.max(PHOTOS.length, 6);
+  if (!g || !PHOTOS.length) return;
+  document.getElementById("work").hidden = false;
+  var n = PHOTOS.length;
   for (var i = 0; i < n; i++) {
     var d = document.createElement("div");
     d.className = "shot";

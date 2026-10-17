@@ -9,6 +9,22 @@ VICTOR_TEL = "+12246377971"
 EMAIL = "info@example.com"  # TODO: replace with the real business email
 # --------------------
 
+# Images are hosted on Higgsfield for now. To self-host, save them into assets/ and change these values to "assets/name.jpg"
+IMG_BASE = "https://d8j0ntlcm91z4.cloudfront.net/user_3Gy0O1oJK9nZCQd6ZidORNJu8qM/"
+IMG = {
+    "hero": "hf_20261017_224734_cab937fd-9fd4-4245-bd66-3b08febd8044.png",
+    "install": "hf_20261017_224733_52c04477-a54c-4cf7-95b7-3fb10510652d.png",
+    "repair": "hf_20261017_224733_8e12d792-cb5d-4a95-bab0-8cf3d3c41c6f.png",
+    "winter": "hf_20261017_224734_baeb9b04-0b1c-424c-b356-33c40e5199c3.png",
+    "backyard": "hf_20261017_224732_81fea884-f100-4eeb-8efb-dbd53540cead.png",
+    "drip": "hf_20261017_224733_5c8c31fb-71a1-4232-8ace-ff255b1fae7c.png",
+    "valves": "hf_20261017_224733_5125b516-0277-4df1-b4f6-b8455aec5f2f.png",
+    "sunset": "hf_20261017_224732_8a25df22-9ee4-4938-b3b7-dede5e513336.png",
+}
+def img(k):
+    v = IMG[k]
+    return v if v.startswith("assets/") else IMG_BASE + v
+
 SITE = "VC Irrigation"
 
 def drop_svg():
@@ -57,7 +73,7 @@ FOOT = f'''</main>
     </div>
     <div>
       <strong>Contact</strong>
-      <p>Maria: <a href="tel:{MARIA_TEL}">{MARIA_DISPLAY}</a><br>Victor: <a href="tel:{VICTOR_TEL}">{VICTOR_DISPLAY}</a></p>
+      <p><a href="tel:{MARIA_TEL}">{MARIA_DISPLAY}</a><br><a href="tel:{VICTOR_TEL}">{VICTOR_DISPLAY}</a></p>
     </div>
   </div>
   <div class="wrap small">&copy; <span id="yr"></span> {SITE}. All rights reserved.</div>
@@ -67,132 +83,146 @@ FOOT = f'''</main>
 </html>
 '''
 
-def yard_svg():
-    return '''<svg class="hero-art" viewBox="0 0 600 380" role="img" aria-label="Lawn sprinkler watering a green yard">
-  <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfeaf7"/><stop offset="1" stop-color="#eef8fc"/></linearGradient>
-    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fb15a"/><stop offset="1" stop-color="#2f8a3e"/></linearGradient>
-  </defs>
-  <rect width="600" height="380" fill="url(#sky)"/>
-  <circle cx="500" cy="70" r="34" fill="#ffe28a"/>
-  <path d="M0 230 Q150 190 300 225 T600 215 V380 H0z" fill="url(#grass)"/>
-  <g fill="none" stroke="#3aa0d8" stroke-width="3" stroke-linecap="round" opacity=".85">
-    <path d="M300 250 Q240 150 160 215"/><path d="M300 250 Q270 130 215 205"/>
-    <path d="M300 250 Q300 120 300 200"/><path d="M300 250 Q330 130 385 205"/><path d="M300 250 Q360 150 440 215"/>
-  </g>
-  <g fill="#3aa0d8" opacity=".8"><circle cx="160" cy="218" r="4"/><circle cx="215" cy="208" r="4"/><circle cx="300" cy="203" r="4"/><circle cx="385" cy="208" r="4"/><circle cx="440" cy="218" r="4"/></g>
-  <rect x="294" y="248" width="12" height="22" rx="3" fill="#33414a"/>
-  <rect x="289" y="266" width="22" height="8" rx="3" fill="#1f2a30"/>
-  <g transform="translate(60 150)"><rect x="0" y="40" width="90" height="70" fill="#e9dfd0"/><path d="M-8 44 L45 0 L98 44z" fill="#b5533c"/><rect x="36" y="68" width="18" height="42" fill="#7a5a3a"/></g>
-</svg>'''
+
+def tick():
+    return '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+
+def hero_bg(k):
+    return f'style="background-image:linear-gradient(90deg,rgba(10,40,30,.78),rgba(10,40,30,.35)),url({img(k)})"'
+
+def banner(k, h, p):
+    return f'<section class="banner" {hero_bg(k)}><div class="wrap"><h1>{h}</h1><p class="lead">{p}</p></div></section>'
 
 # ---------------- HOME ----------------
-home = head(f"{SITE} | Sprinkler Installation, Service & Repair in Chicagoland",
-            "Family-owned sprinkler system installation, service, repair and fall winterization serving the Chicagoland area. Free estimates.", "home") + f'''
-<section class="notice">
-  <div class="wrap">Winterization season is here. We are booking sprinkler blowouts from mid-October through early November. <a href="contact.html">Schedule a blowout</a></div>
-</section>
+def card(k, t, d):
+    return f'<article class="card"><div class="ph" style="background-image:url({img(k)})"></div><div class="cb"><h3>{t}</h3><p>{d}</p></div></article>'
 
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <p class="eyebrow">Chicagoland sprinkler specialists</p>
-      <h1>A greener lawn, without the guesswork.</h1>
-      <p class="lead">{SITE} installs, services and repairs sprinkler systems for homeowners across the Chicago area. Honest advice, fair pricing and work we stand behind.</p>
-      <p class="btns"><a class="btn primary" href="contact.html">Get a free estimate</a> <a class="btn" href="tel:{MARIA_TEL}">Call Maria</a> <a class="btn" href="tel:{VICTOR_TEL}">Call Victor</a></p>
-    </div>
-    {yard_svg()}
+home = head(f"{SITE} | Sprinkler Installation, Service & Repair in Chicagoland",
+            "Family-owned sprinkler system installation, service, repair and fall winterization serving the Chicagoland area. Free estimates.", "home") + f"""
+<section class="notice"><div class="wrap">Winterization season is here. We are booking sprinkler blowouts from mid-October through early November. <a href="contact.html">Schedule yours</a></div></section>
+
+<section class="hero" {hero_bg('hero')}>
+  <div class="wrap">
+    <p class="eyebrow">Chicagoland sprinkler specialists</p>
+    <h1>A greener lawn, without the guesswork.</h1>
+    <p class="lead">{SITE} installs, services and repairs sprinkler systems for homeowners across the Chicago area. Honest advice, fair pricing and work we stand behind.</p>
+    <p class="btns"><a class="btn primary" href="contact.html">Get a free estimate</a> <a class="btn ghost" href="tel:{MARIA_TEL}">Call us</a></p>
   </div>
 </section>
 
-<section class="band">
+<section class="trust">
   <div class="wrap trio">
-    <div><h3>Family owned</h3><p>You deal directly with the people doing the work, not a call center.</p></div>
-    <div><h3>Straight answers</h3><p>We tell you what your system needs and what it does not.</p></div>
-    <div><h3>Built to last</h3><p>Proper zoning, quality parts and clean installs for your yard and water pressure.</p></div>
+    <div>{tick()}<h3>Family owned</h3><p>You deal with the people doing the work, not a call center.</p></div>
+    <div>{tick()}<h3>Straight answers</h3><p>We tell you what your system needs, and what it does not.</p></div>
+    <div>{tick()}<h3>Built to last</h3><p>Proper zoning, quality parts and clean installs.</p></div>
   </div>
 </section>
 
 <section class="wrap section">
-  <h2>What we do</h2>
+  <p class="eyebrow">What we do</p>
+  <h2>Everything your sprinkler system needs</h2>
   <div class="cards">
-    <article class="card"><h3>New system installation</h3><p>Custom layout designed around your lawn, beds and water pressure.</p></article>
-    <article class="card"><h3>Service and repair</h3><p>Broken heads, leaks, stuck valves and timer problems fixed fast.</p></article>
-    <article class="card"><h3>Spring startup</h3><p>We wake your system up, check every zone and adjust coverage.</p></article>
-    <article class="card"><h3>Fall winterization</h3><p>Compressed air blowout to clear the lines before freezing weather.</p></article>
+    {card('install','New system installation','Custom layout designed around your lawn, beds and water pressure.')}
+    {card('repair','Service and repair','Broken heads, leaks, stuck valves and timer problems fixed fast.')}
+    {card('backyard','Spring startup','We wake your system up, check every zone and adjust coverage.')}
+    {card('winter','Fall winterization','Compressed air blowout to clear the lines before freezing weather.')}
   </div>
   <p class="center"><a class="btn" href="services.html">See all services</a></p>
 </section>
 
-<section class="band alt">
-  <div class="wrap">
-    <h2>How it works</h2>
-    <ol class="steps">
-      <li><strong>Tell us about your yard.</strong> Call or send the quick form.</li>
-      <li><strong>Free estimate.</strong> We look at the property and give you a clear price.</li>
-      <li><strong>We get it done.</strong> Scheduled work, tidy site, and a walkthrough when we finish.</li>
-    </ol>
+<section class="split">
+  <div class="wrap split-grid">
+    <img src="{img('drip')}" alt="Drip irrigation running through a garden bed" loading="lazy">
+    <div>
+      <p class="eyebrow">Beyond the lawn</p>
+      <h2>Gardens and beds need water too</h2>
+      <p>We can add drip zones for flower beds and gardens, set up smart controllers and rain sensors, and expand an older system when your landscaping changes.</p>
+      <ul class="ticks"><li>Drip zones for beds and gardens</li><li>Smart controllers and rain sensors</li><li>Extra zones for new landscaping</li></ul>
+    </div>
   </div>
 </section>
 
 <section class="wrap section">
-  <h2>Recent work</h2>
-  <p class="muted">Real projects from around Chicagoland.</p>
+  <p class="eyebrow">Simple process</p>
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li><span>1</span><div><strong>Tell us about your yard</strong><p>Call, text or send the quick form.</p></div></li>
+    <li><span>2</span><div><strong>Free estimate</strong><p>We look at the property and give you a clear price.</p></div></li>
+    <li><span>3</span><div><strong>We get it done</strong><p>Scheduled work, tidy site, and a walkthrough when we finish.</p></div></li>
+  </ol>
+</section>
+
+<section class="wrap section" id="work" hidden>
+  <p class="eyebrow">Our work</p><h2>Recent projects</h2>
   <div class="gallery" id="gallery"></div>
 </section>
 
-<section class="cta-band">
-  <div class="wrap">
-    <h2>Ready for a system that just works?</h2>
-    <p>Tell us about your property and we will get back to you.</p>
-    <a class="btn light" href="contact.html">Request a free estimate</a>
-  </div>
+<section class="cta-band" style="background-image:linear-gradient(135deg,rgba(20,70,45,.88),rgba(20,87,127,.85)),url({img('sunset')})">
+  <div class="wrap"><h2>Ready for a system that just works?</h2><p>Tell us about your property and we will get back to you.</p><a class="btn light" href="contact.html">Request a free estimate</a></div>
 </section>
-''' + FOOT
+""" + FOOT
 
 # ---------------- SERVICES ----------------
-def svc(title, body, items):
+def svc(k, title, body, items, flip=False):
     li = "".join(f"<li>{i}</li>" for i in items)
-    return f'<article class="svc"><h2>{title}</h2><p>{body}</p><ul class="ticks">{li}</ul></article>'
+    return f'<article class="svc{" flip" if flip else ""}"><img src="{img(k)}" alt="{title}" loading="lazy"><div><h2>{title}</h2><p>{body}</p><ul class="ticks">{li}</ul></div></article>'
 
 services = head(f"Services | {SITE}",
-                "Sprinkler installation, repair, spring startup and fall winterization across Chicagoland.", "services") + f'''
-<section class="page-title"><div class="wrap"><h1>Our services</h1><p class="lead">Everything your sprinkler system needs, from the first trench to the last blowout.</p></div></section>
+                "Sprinkler installation, repair, spring startup and fall winterization across Chicagoland.", "services") + f"""
+{banner('install','Our services','Everything your sprinkler system needs, from the first trench to the last blowout.')}
 <section class="wrap section services">
-{svc("New system installation", "We design the system around your yard instead of forcing a template onto it.", ["Layout and zone design for lawn and planting beds", "Head and nozzle selection for even coverage", "Controller setup and a walkthrough on how to use it", "Clean install with the lawn restored"])}
-{svc("Service and repair", "Something not working right? We find the cause and fix it properly.", ["Broken or misaligned heads and nozzles", "Leaks, low pressure and zones that will not turn on", "Valve and wiring troubleshooting", "Timer and controller replacement"])}
-{svc("Spring startup", "A quick check in spring catches small problems before they cost you a dry summer.", ["Turn the system on and test every zone", "Look for leaks and damaged heads", "Adjust spray patterns and program the schedule"])}
-{svc("Fall winterization", "In our climate the frost goes deeper than the pipes. Water left inside can freeze and crack lines, valves and heads.", ["Compressed air blowout of every zone", "Shut down and drain the system", "Controller set to rain mode for winter", "Best done before temperatures stay below freezing"])}
-{svc("Upgrades and add-ons", "Make an older system more efficient.", ["Smart controllers and rain sensors", "Drip zones for gardens and beds", "Adding zones for new landscaping"])}
+{svc('install','New system installation','We design the system around your yard instead of forcing a template onto it.',['Layout and zone design for lawn and planting beds','Head and nozzle selection for even coverage','Controller setup and a walkthrough on how to use it','Clean install with the lawn restored'])}
+{svc('repair','Service and repair','Something not working right? We find the cause and fix it properly.',['Broken or misaligned heads and nozzles','Leaks, low pressure and zones that will not turn on','Valve and wiring troubleshooting','Timer and controller replacement'],True)}
+{svc('backyard','Spring startup','A quick check in spring catches small problems before they cost you a dry summer.',['Turn the system on and test every zone','Look for leaks and damaged heads','Adjust spray patterns and program the schedule'])}
+{svc('winter','Fall winterization','In our climate the frost goes deeper than the pipes. Water left inside can freeze and crack lines, valves and heads.',['Compressed air blowout of every zone','Shut down and drain the system','Controller set to rain mode for winter','Best done before temperatures stay below freezing'],True)}
+{svc('drip','Upgrades and add-ons','Make an older system more efficient.',['Smart controllers and rain sensors','Drip zones for gardens and beds','Adding zones for new landscaping'])}
 </section>
-<section class="cta-band"><div class="wrap"><h2>Not sure what you need?</h2><p>Describe the problem and we will point you in the right direction.</p><a class="btn light" href="contact.html">Contact us</a></div></section>
-''' + FOOT
+<section class="cta-band" style="background-image:linear-gradient(135deg,rgba(20,70,45,.88),rgba(20,87,127,.85)),url({img('sunset')})"><div class="wrap"><h2>Not sure what you need?</h2><p>Describe the problem and we will point you in the right direction.</p><a class="btn light" href="contact.html">Contact us</a></div></section>
+""" + FOOT
 
 # ---------------- FAQ ----------------
-faqs = [
- ("When should I winterize my sprinkler system?", "Before temperatures stay below freezing. In the Chicago area that usually means October through early November, but ground temperature drops slower than air temperature, so there is a window. Do not wait for the first hard freeze."),
- ("What is a sprinkler blowout?", "We connect an air compressor to your system and push the water out of the pipes, valves and heads, one zone at a time. It protects everything from freeze damage."),
- ("How long does winterization take?", "Usually a short visit. Most homes take well under an hour, depending on how many zones you have."),
- ("Do I need to be home?", "Usually not, as long as we can reach the controller and shutoff. We will confirm access when we schedule."),
- ("What happens if I skip winterization?", "Water can freeze and expand inside the system, cracking pipes, valves and sprinkler heads. You often find out in spring when the repair bill shows up."),
- ("Do you offer free estimates?", "Yes. Contact us and we will set up a time to look at your property."),
- ("What areas do you serve?", "The Chicagoland area. Reach out with your town and we will confirm we can get to you."),
- ("How long does a new installation take?", "Most residential systems take a few days depending on yard size and layout. We will give you a clear timeline with your estimate."),
- ("My sprinkler head is broken or a zone will not turn on. Can you fix it?", "Yes. Repair is a big part of what we do. Tell us what you are seeing when you contact us."),
- ("Do I need a backflow test?", "Many towns require backflow preventer testing on irrigation systems. Requirements vary by municipality, so check with your village or ask us when you book."),
+groups = [
+ ("Winterization", [
+  ("When should I winterize my sprinkler system?", "Before temperatures stay below freezing. In the Chicago area that is usually mid-October through early November. Ground temperature drops slower than air temperature, so there is a window, but do not wait for the first hard freeze."),
+  ("What is a sprinkler blowout?", "We connect an air compressor to your system and push the water out of the pipes, valves and heads, one zone at a time. It protects everything from freeze damage."),
+  ("How long does it take?", "Usually a short visit. Most homes take well under an hour, depending on how many zones you have."),
+  ("Do I need to be home?", "Usually not, as long as we can reach the controller and shutoff. We will confirm access when we schedule."),
+  ("What happens if I skip it?", "Water can freeze and expand inside the system, cracking pipes, valves and heads. You often find out in spring when the repair bill shows up."),
+ ]),
+ ("Estimates and service", [
+  ("Do you offer free estimates?", "Yes. Contact us and we will set up a time to look at your property."),
+  ("What areas do you serve?", "The Chicagoland area. Send us your town and we will confirm we can get to you."),
+  ("My sprinkler head is broken or a zone will not turn on. Can you fix it?", "Yes. Repair is a big part of what we do. Tell us what you are seeing when you contact us."),
+  ("Do I need a backflow test?", "Many towns require backflow preventer testing on irrigation systems. Requirements vary by municipality, so check with your village or ask us when you book."),
+ ]),
+ ("New installation", [
+  ("How long does an installation take?", "Most residential systems take a few days depending on yard size and layout. We will give you a clear timeline with your estimate."),
+ ]),
 ]
-fq = "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q,a in faqs)
-faq = head(f"FAQ | {SITE}", "Answers about sprinkler winterization, repair, installation and estimates in Chicagoland.", "faq") + f'''
-<section class="page-title"><div class="wrap"><h1>Frequently asked questions</h1><p class="lead">Quick answers to what homeowners ask us most.</p></div></section>
-<section class="wrap section narrow">
-{fq}
-<p class="center muted">Do not see your question? <a href="contact.html">Ask us</a>.</p>
+fq = ""
+n = 0
+for g, items in groups:
+    fq += f'<h2 class="gh">{g}</h2>'
+    for q, a in items:
+        n += 1
+        fq += f'<details{" open" if n==1 else ""}><summary><span class="q">{q}</span></summary><div class="ans"><p>{a}</p></div></details>'
+faq = head(f"FAQ | {SITE}", "Answers about sprinkler winterization, repair, installation and estimates in Chicagoland.", "faq") + f"""
+{banner('winter','Frequently asked questions','Quick answers to what homeowners ask us most.')}
+<section class="wrap section faq-grid">
+  <div class="faqs">{fq}</div>
+  <aside class="side">
+    <img src="{img('winter')}" alt="Frost covered sprinkler head" loading="lazy">
+    <h3>Still have a question?</h3>
+    <p>Call or text us, or send a quick message and we will get back to you.</p>
+    <p><a class="btn primary" href="contact.html">Ask us</a></p>
+    <p><a href="tel:{MARIA_TEL}">Call us</a></p>
+  </aside>
 </section>
-''' + FOOT
+""" + FOOT
 
 # ---------------- CONTACT ----------------
-contact = head(f"Contact | {SITE}", "Request a free sprinkler estimate or schedule winterization with VC Irrigation.", "contact") + f'''
-<section class="page-title"><div class="wrap"><h1>Get a free estimate</h1><p class="lead">Call, email, or send the form and we will get back to you.</p></div></section>
+contact = head(f"Contact | {SITE}", "Request a free sprinkler estimate or schedule winterization with VC Irrigation.", "contact") + f"""
+{banner('backyard','Get a free estimate','Call, text, or send the form and we will get back to you.')}
 <section class="wrap section contact-grid">
   <form id="contact-form" class="form">
     <label>Name<input name="name" required autocomplete="name"></label>
@@ -214,11 +244,12 @@ contact = head(f"Contact | {SITE}", "Request a free sprinkler estimate or schedu
   </form>
   <aside class="info">
     <h2>Reach us directly</h2>
-    <p><strong>Call or text</strong><br>Maria: <a href="tel:{MARIA_TEL}">{MARIA_DISPLAY}</a><br>Victor: <a href="tel:{VICTOR_TEL}">{VICTOR_DISPLAY}</a></p>
+    <p><strong>Call or text</strong><br><a href="tel:{MARIA_TEL}">{MARIA_DISPLAY}</a><br><a href="tel:{VICTOR_TEL}">{VICTOR_DISPLAY}</a></p>
     <p><strong>Service area</strong><br>Chicagoland</p>
+    <p><strong>Winterization</strong><br>Booking now through early November.</p>
   </aside>
 </section>
-''' + FOOT
+""" + FOOT
 
 for name, html in [("index", home), ("services", services), ("faq", faq), ("contact", contact)]:
     open(f"/home/claude/vc-irrigation/{name}.html", "w").write(html)
@@ -232,8 +263,9 @@ var PHOTOS = [
 ];
 (function () {{
   var g = document.getElementById("gallery");
-  if (!g) return;
-  var n = Math.max(PHOTOS.length, 6);
+  if (!g || !PHOTOS.length) return;
+  document.getElementById("work").hidden = false;
+  var n = PHOTOS.length;
   for (var i = 0; i < n; i++) {{
     var d = document.createElement("div");
     d.className = "shot";
@@ -355,5 +387,57 @@ details p{margin:0 0 16px;color:var(--muted)}
 .cols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px}
 @media(max-width:760px){.cols{grid-template-columns:1fr}}
 .site-footer .small{margin-top:24px;opacity:.7}
+
+/* ---- v2: imagery ---- */
+.hero,.banner,.cta-band{background-size:cover;background-position:center}
+.hero{padding:120px 0 110px;color:#fff}
+.hero h1{max-width:680px;text-shadow:0 2px 14px rgba(0,0,0,.35)}
+.hero .lead{color:#eaf3ee;max-width:560px}
+.hero .eyebrow,.banner .eyebrow{color:#a9e3b3}
+.banner{padding:80px 0 70px;color:#fff}
+.banner .lead{color:#eaf3ee;margin:0}
+.btn.ghost{background:rgba(255,255,255,.12);border-color:#fff;color:#fff}
+.btn.ghost:hover{background:rgba(255,255,255,.25)}
+.btn{transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.12)}
+.trust{background:#fff;border-bottom:1px solid var(--line);padding:30px 0}
+.trust .trio>div{display:grid;grid-template-columns:auto 1fr;column-gap:12px}
+.trust svg{grid-row:span 2;color:#fff;background:var(--green);border-radius:50%;padding:7px;width:38px;height:38px}
+.trust h3{margin:0;font-size:1.05rem}
+.trust p{margin:0;color:var(--muted);font-size:.95rem}
+.card{padding:0;overflow:hidden;box-shadow:0 2px 10px rgba(20,60,40,.06);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(20,60,40,.14)}
+.card .ph{aspect-ratio:3/2;background-size:cover;background-position:center}
+.card .cb{padding:18px 20px 22px}
+.card .cb p{margin:0;color:var(--muted);font-size:.97rem}
+.split{background:var(--soft);padding:64px 0}
+.split-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+.split-grid img{width:100%;border-radius:18px;box-shadow:0 14px 34px rgba(20,60,40,.2);aspect-ratio:3/2;object-fit:cover}
+@media(max-width:820px){.split-grid{grid-template-columns:1fr}}
+.steps{list-style:none;padding:0;max-width:none;grid-template-columns:repeat(3,1fr);gap:20px}
+.steps li{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:20px;background:#fff}
+.steps li>span{flex:none;width:38px;height:38px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+.steps p{margin:4px 0 0;color:var(--muted)}
+@media(max-width:820px){.steps{grid-template-columns:1fr}}
+.cta-band{padding:76px 0}
+.eyebrow{margin-bottom:.4em}
+.services{display:grid;gap:56px}
+.svc{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;border:none;padding:0}
+.svc img{width:100%;border-radius:18px;aspect-ratio:3/2;object-fit:cover;box-shadow:0 12px 30px rgba(20,60,40,.18)}
+.svc.flip img{order:2}
+@media(max-width:820px){.svc{grid-template-columns:1fr;gap:20px}.svc.flip img{order:0}}
+.faq-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:40px;align-items:start}
+@media(max-width:900px){.faq-grid{grid-template-columns:1fr}}
+.gh{font-size:1.15rem;color:var(--green-d);margin:30px 0 4px;text-transform:uppercase;letter-spacing:.06em}
+.gh:first-child{margin-top:0}
+details{border:1px solid var(--line);border-left:4px solid var(--line);border-radius:12px;padding:0 20px;margin:12px 0;background:#fff;box-shadow:0 1px 6px rgba(20,60,40,.05);transition:border-color .2s,box-shadow .2s}
+details[open]{border-left-color:var(--green);box-shadow:0 8px 22px rgba(20,60,40,.1)}
+summary{padding:18px 0}
+summary:after{content:"+";width:30px;height:30px;border-radius:50%;background:var(--soft);display:inline-flex;align-items:center;justify-content:center;float:right;margin-left:12px;color:var(--green-d);font-size:1.3rem;line-height:1}
+details[open] summary:after{content:"\2212";background:var(--green);color:#fff}
+.ans p{margin:0 0 18px;color:var(--muted)}
+.side{position:sticky;top:90px;background:var(--soft);border-radius:18px;padding:22px;border:1px solid var(--line)}
+.side img{width:100%;border-radius:12px;aspect-ratio:3/2;object-fit:cover;margin-bottom:14px}
+.side h3{margin-bottom:6px}
 ''')
 print("built")
