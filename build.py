@@ -310,10 +310,10 @@ h2{font-size:clamp(1.5rem,3vw,2rem)}
 .lead{font-size:1.15rem;color:var(--muted);max-width:620px}
 .eyebrow{color:var(--green-d);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;margin:0 0 .6em}
 
-.site-header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}
+.site-header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);box-shadow:0 2px 14px rgba(20,60,40,.08)}
 .bar{display:flex;align-items:center;justify-content:space-between;min-height:68px;gap:16px}
 .brand{display:flex;align-items:center;text-decoration:none;color:var(--ink)}
-.brand img{height:58px;width:auto}
+.brand img{height:62px;width:auto}
 .wordmark{align-items:center;gap:6px;font-weight:800;font-size:1.3rem;color:var(--blue-d)}
 nav{display:flex;gap:6px;align-items:center}
 nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--ink);font-weight:600}
